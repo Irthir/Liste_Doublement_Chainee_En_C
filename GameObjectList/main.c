@@ -68,6 +68,9 @@ int main()
     printf("\nAffichons la liste dans l'ordre inverse.\n");
     AfficheListeInverse(pListe);
 
+    printf("\nDestruction de la liste.\n");
+    DetruireListe(pListe);
+
     printf("\nFin du Programme.\n");
     return 0;
 }

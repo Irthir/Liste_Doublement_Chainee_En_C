@@ -260,7 +260,7 @@ void ExtraireListe(tListe *pListeExtract,int nClefGameObjet)
                         pListeExtract->pFin=pActuel->pPrecedent;
                     }
                     free(pActuel);
-                    pListeExtract--;
+                    pListeExtract->nTaille--;
                     nBoolStop=1;
                 }
             }
@@ -277,21 +277,28 @@ void SuppDebut(tListe *pListe)
 //ENTREE : La liste.
 //SORTIE : La liste mise à jour avec un élément en moins.
 {
-    tElementListe *pElementActuel;
+    if(pListe->nTaille > 0)
+    {
+        tElementListe *pElementActuel;
+        pElementActuel = pListe->pDebut;
+        pListe->pDebut = pListe->pDebut->pSuivant;
 
-    if(pListe->nTaille == 0)
-        exit(EXIT_FAILURE);
+        if(pListe->pDebut == NULL)
+        {
+            pListe->pFin = NULL;
+        }
+        else
+        {
+            pListe->pDebut->pPrecedent = NULL;
+        }
 
-    pElementActuel = pListe->pDebut;
-    pListe->pDebut = pListe->pDebut->pSuivant;
-
-    if(pListe->pDebut == NULL)
-        pListe->pFin = NULL;
+        free(pElementActuel);
+        pListe->nTaille--;
+    }
     else
-        pListe->pDebut->pPrecedent = NULL;
-
-    free(pElementActuel);
-    pListe->nTaille--;
+    {
+        printf("Suppression impossible, liste vide.\n");
+    }
 }
 
 void SuppFin(tListe *pListe)
@@ -299,21 +306,26 @@ void SuppFin(tListe *pListe)
 //ENTREE : La liste.
 //SORTIE : La liste mise à jour avec un élément en moins.
 {
-    tElementListe *pElementActuel;
 
-    if(pListe->nTaille == 0)
-        exit(EXIT_FAILURE);
 
-    pElementActuel = pListe->pFin;
-    pListe->pFin = pListe->pFin->pPrecedent;
+    if(pListe->nTaille > 0)
+    {
+        tElementListe *pElementActuel;
+        pElementActuel = pListe->pFin;
+        pListe->pFin = pListe->pFin->pPrecedent;
 
-    if(pListe->pFin == NULL)
-        pListe->pDebut = NULL;
+        if(pListe->pFin == NULL)
+            pListe->pDebut = NULL;
+        else
+            pListe->pFin->pSuivant = NULL;
+
+        free(pElementActuel);
+        pListe->nTaille--;
+    }
     else
-        pListe->pFin->pSuivant = NULL;
-
-    free(pElementActuel);
-    pListe->nTaille--;
+    {
+        printf("Suppression impossible, liste vide.\n");
+    }
 }
 
 void DetruireListe(tListe *pListe)
